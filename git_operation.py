@@ -1,7 +1,7 @@
 import os
 
 commit_string = "init"
-not_add = ['results', 'data']
+not_add = ['results', 'data', 'weights']
 for item in os.listdir():
     if item in not_add:
         # print(item)
@@ -9,3 +9,4 @@ for item in os.listdir():
     else:
         os.system(f"git add {item}")
 os.system(f'git commit -m "{commit_string}"')
+os.system("git push origin main")
