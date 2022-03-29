@@ -71,9 +71,9 @@ def run(
 
 
 
-    train_dataset = MyDataset(config.train_file_json_path)
+    train_dataset = MyDataset(config.train_file_json_path,data_dim=min(config.data_dim, config.MAX_DATA_DIM))
     train_dataloader = DataLoader(train_dataset, batch_size=config.batch_size, shuffle=True, drop_last=True)
-    test_dataset = MyDataset(config.test_file_json_path)
+    test_dataset = MyDataset(config.test_file_json_path, data_dim=min(config.data_dim, config.MAX_DATA_DIM))
     test_dataloader = DataLoader(test_dataset, batch_size=config.batch_size, shuffle=False, drop_last=True)
     
     model.to(device)
@@ -89,10 +89,13 @@ def run(
     if mode == "train":
         with open(train_log,'w') as f:
             f.write(get_datetime() + '\n')
+            f.write(str(model))
+            f.write('\n')
     test_log = join(base_dir,'test.txt')
     with open(test_log,'w') as f:
         f.write(get_datetime() + '\n')
-
+        f.write(str(model))
+        f.write('\n')
     if  mode == "train":
         pass
     else:
@@ -136,6 +139,7 @@ def run(
             acc_test = 0.0
             count = 0
             for item in tqdm(test_dataloader):
+                # img = normalize(item[0][...,0:min(config.data_dim, 1024)].to(device))
                 img = normalize(item[0].to(device))
                 label = item[1].to(device).squeeze()
                 label_pred_distribution = model(img)

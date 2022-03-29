@@ -9,12 +9,12 @@ def load_json(path):
     return ans
 
 class MyDataset(Dataset):
-    def __init__(self,path) -> None:
+    def __init__(self,path, data_dim=1024) -> None:
         super().__init__()
         data = load_json(path)
         self.data = []
         for item in data:
-            img = torch.Tensor(item[0])
+            img = torch.Tensor(item[0])[0:data_dim]
             label = item[1]
 
             # benign

@@ -8,7 +8,7 @@ import torch
 config = EasyDict(load_json('config/config.json'))
 
 checkpoint_path = None
-model = Model()
+model = Model(input_dim=min(config.data_dim, config.MAX_DATA_DIM))
 run(model,config, mode='train', checkpoint_path=checkpoint_path)
 
 # checkpoint_path = 'results/000014/checkpoints/9.pt'
